@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline Document Analyzer</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #f4f6f8;
+      color: #333;
+    }
+    h1 { color: #111; }
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+    .controls {
+      margin: 15px 0;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    select, button {
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      background: #0066cc;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #888;
+      cursor: not-allowed;
+    }
+    .output-box {
+      margin-top: 20px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      min-height: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Offline Document Analyzer</h1>
+  <p>Local AI document querying and extraction powered by QVAC.</p>
+
+  <textarea id="documentInput" placeholder="Paste your document or raw text here..."></textarea>
+
+  <div class="controls">
+    <select id="analysisMode">
+      <option value="summary">Summarize Document</option>
+      <option value="key_points">Extract Key Points</option>
+      <option value="full">Full Breakdown</option>
+    </select>
+    <button id="analyzeBtn" onclick="analyzeDoc()">Analyze Document</button>
+  </div>
+
+  <h3>Analysis Result</h3>
+  <div id="output" class="output-box">Results will appear here...</div>
+
+  <script>
+    async function analyzeDoc() {
+      const text = document.getElementById('documentInput').value;
+      const mode = document.getElementById('analysisMode').value;
+      const output = document.getElementById('output');
+      const btn = document.getElementById('analyzeBtn');
+
+      if (!text.trim()) {
+        alert('Please paste some text first.');
+        return;
+      }
+
+      output.innerText = 'Analyzing locally via QVAC...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, mode })
+        });
+
+        const data = await res.json();
+        if (data.error) {
+          output.innerText = 'Error: ' + data.error;
+        } else {
+          output.innerText = data.result;
+        }
+      } catch (err) {
+        output.innerText = 'Error processing request.';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+
+</body>
+</html>
