@@ -1,0 +1,14 @@
+{
+  "name": "offline-document-analyzer",
+  "version": "1.0.0",
+  "description": "An offline AI document analysis and extraction tool powered by QVAC.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@qvac/sdk": "0.19.1",
+    "express": "^4.19.2"
+  },
+  "license": "MIT"
+}
