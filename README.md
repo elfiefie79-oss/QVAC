@@ -9,10 +9,3 @@ It calls the QVAC SDK's `loadModel()` and `completion()` functions directly. The
 ```bash
 npm start
 
-Paste document text, select your analysis mode (Summary, Key Points, or Full Breakdown), and get instant local AI extraction results.
-SDK version
-Built against ⁠@qvac/sdk⁠ v0.19.1 (see ⁠package.json⁠).
-Requirements
- Node.js >= 22.17
- A machine that meets QVAC's system requirements
- Vulkan-compatible GPU setup
